@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:foi_et_verite_2/utils/colorsApp.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../utils/colorsApp.dart';
 
 class AproposScreen extends StatelessWidget {
   @override

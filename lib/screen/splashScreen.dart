@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:foi_et_verite_2/screen/homeScreen.dart';
-import 'package:foi_et_verite_2/utils/colorsApp.dart';
-import 'package:foi_et_verite_2/utils/route.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'loginScreen.dart';
+import '../db/db.dart';
+import '../utils/colorsApp.dart';
+import '../utils/route.dart';
+import 'homeScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -11,14 +12,29 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  List userIsConnected;
   @override
   void initState() {
     super.initState();
+    readUserData();
     Timer(Duration(seconds: 3), () async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
       pushNewPageRemoveUntil(
-          HomeScreen(userIsConnected: prefs.getString('login')), context);
+          userIsConnected == null
+              ? LoginScreen()
+              : HomeScreen(
+                  nom: userIsConnected[0]["nom"],
+                  prenom: userIsConnected[0]["prenom"],
+                  telephone: userIsConnected[0]["numTel"],
+                  email: userIsConnected[0]["email"],
+                ),
+          context);
     });
+  }
+
+  readUserData() async {
+    userIsConnected = await getItems();
+    print(userIsConnected);
+    setState(() {});
   }
 
   @override

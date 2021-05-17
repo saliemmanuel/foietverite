@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:foi_et_verite_2/screen/splashScreen.dart';
-import 'package:foi_et_verite_2/utils/colorsApp.dart';
+import 'db/db.dart';
+import 'screen/splashScreen.dart';
+import 'utils/colorsApp.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initDatabase();
   runApp(MaterialApp(
+    title: "Foi et vérité",
     home: SplashScreen(),
     theme: ThemeData(
         appBarTheme: AppBarTheme(

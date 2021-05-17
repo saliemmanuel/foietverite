@@ -1,33 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:foi_et_verite_2/screen/aproposScreen.dart';
-import 'package:foi_et_verite_2/screen/profilScreen.dart';
-import 'package:foi_et_verite_2/screen/searchScreen.dart';
-import 'package:foi_et_verite_2/utils/colorsApp.dart';
-import 'package:foi_et_verite_2/widgets/homeWidget.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:toast/toast.dart';
 
-class HomeScreen extends StatefulWidget {
-  final String userIsConnected;
-  final int currentIndex;
+import '../utils/colorsApp.dart';
+import '../widgets/homeWidget.dart';
+import 'aproposScreen.dart';
+import 'searchScreen.dart';
+import 'userDataScreen.dart';
 
-  const HomeScreen({Key key, this.userIsConnected, this.currentIndex})
+class HomeScreen extends StatefulWidget {
+  final String nom;
+  final String prenom;
+  final String telephone;
+  final String email;
+
+  const HomeScreen({Key key, this.nom, this.prenom, this.telephone, this.email})
       : super(key: key);
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Widget> _children = [
-    AcceuilScreen(),
-    SearchScreen(),
-    AproposScreen(),
-    ProfilScreen(userIsConnected: widget.userIsConnected),
-  ];
   var _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
+    List<Widget> _children = [
+      AcceuilScreen(),
+      SearchScreen(),
+      AproposScreen(),
+      UserData(
+        nom: widget.nom,
+        prenom: widget.prenom,
+        numTel: widget.telephone,
+        email: widget.email,
+      ),
+    ];
     return Scaffold(
       appBar: AppBar(
         backgroundColor:
@@ -55,18 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     IconButton(
                         icon: Icon(Icons.notifications,
                             color: ColorsApp.textColors),
-                        onPressed: () => Toast.show(
-                            "Aucune notification disponible", context)),
-                    // Positioned(
-                    //     right: 13.0,
-                    //     top: 12.0,
-                    //     child: Container(
-                    //       height: 10.0,
-                    //       width: 10.0,
-                    //       decoration: BoxDecoration(
-                    //           borderRadius: BorderRadius.circular(25.0),
-                    //           color: Colors.red),
-                    //     ))
+                        onPressed: () =>
+                            Toast.show("---------------", context)),
                   ],
                 ),
         ],

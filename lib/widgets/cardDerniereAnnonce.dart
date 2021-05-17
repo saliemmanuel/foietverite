@@ -1,39 +1,60 @@
 import 'package:flutter/material.dart';
 
 class CardDerniereAnnonce extends StatelessWidget {
+  final String dateArticle;
+  final String titreArticle;
+  final String corpsArticle;
+  final String auteur;
   final Function onPressed;
 
-  const CardDerniereAnnonce({Key key, this.onPressed}) : super(key: key);
+  const CardDerniereAnnonce(
+      {Key key,
+      this.onPressed,
+      this.dateArticle,
+      this.titreArticle,
+      this.corpsArticle,
+      this.auteur})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return InkWell(
-          child: Card(
-               child:  Container(
-                height: 260.0,
-                child: Column(
-                  children: [
-                    ListTile(
-                      trailing: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("date article : 24 / 04 / 2021"),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text("Titre Article Titre Article !!!"),
-                      subtitle: Text("\n\nDescription\nmagna culpa ad proident nulla enim minim voluptate magna officia minim non ipsum. Enim voluptate fugiat deserunt quis occaecat. Sint velit sint mollit ea eu ipsum."),
-                      trailing: Icon(Icons.auto_stories,size: 100.0)
-                    ),
-                    ListTile(
-                      trailing: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("plus info"),
-                      ),
-                    ),
-                  ],
+      child: Card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ListTile(
+              trailing: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Publié le : $dateArticle",
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-             ),
-             onTap: onPressed,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                  title: Text(
+                    "$titreArticle",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text("\n\n$corpsArticle"),
+                  trailing: Icon(Icons.auto_stories, size: 100.0)),
+            ),
+            ListTile(
+              trailing: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "\n Par : $auteur \n \n",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            Text("\n")
+          ],
+        ),
+      ),
+      onTap: onPressed,
     );
   }
 }

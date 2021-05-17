@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foi_et_verite_2/utils/colorsApp.dart';
-import 'package:foi_et_verite_2/widgets/cardWebRadio.dart';
+
+import '../utils/colorsApp.dart';
+import '../widgets/cardWebRadio.dart';
 
 class WebRadioScreen extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class _WebRadioScreenState extends State<WebRadioScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: ColorsApp.primaryColors,
         title: Text("Webradio"),
       ),
       body: Container(

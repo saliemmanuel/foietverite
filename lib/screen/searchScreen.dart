@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foi_et_verite_2/utils/colorsApp.dart';
+
+import '../utils/colorsApp.dart';
 
 class SearchScreen extends StatefulWidget {
   @override

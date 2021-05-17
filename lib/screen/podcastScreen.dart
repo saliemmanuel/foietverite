@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foi_et_verite_2/utils/colorsApp.dart';
-import 'package:foi_et_verite_2/widgets/cardPodcast.dart';
+
+import '../utils/colorsApp.dart';
+import '../widgets/cardPodcast.dart';
 
 class PodcastScreen extends StatefulWidget {
   @override

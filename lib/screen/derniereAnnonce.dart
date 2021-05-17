@@ -1,8 +1,42 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:foi_et_verite_2/utils/colorsApp.dart';
-import 'package:foi_et_verite_2/widgets/cardDerniereAnnonce.dart';
+import 'package:http/http.dart' as http;
 
-class DernierAnnonce extends StatelessWidget {
+import '../utils/colorsApp.dart';
+import '../utils/url.dart';
+import '../widgets/cardDerniereAnnonce.dart';
+import '../widgets/cardDialogue.dart';
+
+class DernierAnnonce extends StatefulWidget {
+  @override
+  _DernierAnnonceState createState() => _DernierAnnonceState();
+}
+
+class _DernierAnnonceState extends State<DernierAnnonce> {
+  List annonceList;
+  getAnnonces() async {
+    var indexLogin = "3";
+    var data = await http.post(UrlApi.urlApi(), body: {
+      "index": indexLogin,
+    });
+    if (data.statusCode == 200) {
+      var response = jsonDecode(data.body);
+      setState(() => annonceList = response);
+    } else {
+      errorDialogueCard(
+          "Erreur !!!", "Erreur lors du chargement des Annonces", context);
+    }
+    if (data.statusCode == 110) {
+      errorDialogueCard("Erreur !!!", "Time out !", context);
+    }
+  }
+
+  @override
+  void initState() {
+    getAnnonces();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,11 +52,17 @@ class DernierAnnonce extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        child: ListView.builder(
-            itemCount: 18,
-            itemBuilder: (_, i) {
-              return CardDerniereAnnonce();
-            }),
+        child: annonceList == null
+            ? Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: annonceList == null ? 0 : annonceList.length,
+                itemBuilder: (_, i) {
+                  return CardDerniereAnnonce(
+                      dateArticle: annonceList[i]["datePublication"],
+                      titreArticle: annonceList[i]["titreAnnonces"],
+                      corpsArticle: annonceList[i]["corpsAnnonces"],
+                      auteur: annonceList[i]["auteurAnnonces"]);
+                }),
       ),
     );
   }

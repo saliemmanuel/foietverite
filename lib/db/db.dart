@@ -1,56 +1,64 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../models/utilisateurmobileModels.dart';
 
-var data3;
-var ue;
 Database db;
 Future<void> initDatabase() async {
   var path = await getDatabasePath('request.db');
   db = await openDatabase(path, version: 1,
       onCreate: (Database db, int version) async {
-    //
-
-    var tableUE = '''CREATE TABLE `unite_enseignement` 
-        (`Nom_Unite` varchar(250) NOT NULL)''';
-    await db.execute(tableUE);
-    print("table unite cree");
-
-    //
-    var tableReq = '''CREATE TABLE `requete` (
-                  `id_Requete` int(11) NOT NULL,
-                  `code_UE` varchar(255) NOT NULL,
-                  `Objet_Req` varchar(500) NOT NULL,
-                  `Commentaire_Req` varchar(500) NOT NULL,
-                  `PiecesJust_Req` varchar(250) NOT NULL,
-                  `DateDepot_Req` varchar(255) NOT NULL,
-                  `id_Etudiant` varchar(250) NOT NULL,
-                  `id_Depart` int(255) NOT NULL )''';
-    await db.execute(tableReq);
-    print("table Requet cree");
-
-    //
-
-    var tableResultat = '''CREATE TABLE `resultat` (
-                `id_Result` int(11) NOT NULL,
-                `Statut_Req` varchar(250) NOT NULL,
-                `Traiteur_Req` varchar(250) NOT NULL,
-                `DateTrai_Req` date NOT NULL,
-                `id_Requete` int(250) NOT NULL ) ''';
-    await db.execute(tableResultat);
-    print("table resultat cree");
+    var utilisateurmobile = """CREATE TABLE `utilisateurmobile` (
+                `idUtilisateurMobile` varchar(255) UNIQUE NOT NULL ,
+                `nom` varchar(50) UNIQUE NOT NULL,
+                `prenom` varchar(50) UNIQUE NOT NULL,
+                `numTel` varchar(50) UNIQUE NOT NULL,
+                `email` varchar(50) UNIQUE NOT NULL,
+                `idUtilisateur` varchar(11) UNIQUE NOT NULL )""";
+    await db.execute(utilisateurmobile);
   });
-  print('db crée');
 }
 
-//
 Future<String> getDatabasePath(String dbName) async {
   var dataPath = await getDatabasesPath();
   var path = join(dataPath, dbName);
   return path;
 }
 
+// Utilisateurmobile //
+//Inserstion utilisateurmobile
+Future<int> saveNewUtilisateurmobile(
+    Utilisateurmobile newUtilisateurmobile) async {
+  int res = await db.insert(
+    "utilisateurmobile",
+    newUtilisateurmobile.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+  return res;
+}
 
+//Get utilisateurmobile
+Future<List> getItems() async {
+  var result = await db.rawQuery("SELECT * FROM utilisateurmobile");
+  return result.toList();
+}
 
+// Mise a jours
+update(Utilisateurmobile newUtilisateurmobile) async {
+  var result = await db.update(
+      "utilisateurmobile", newUtilisateurmobile.toMap(),
+      where: "utilisateurmobile = ?",
+      whereArgs: [newUtilisateurmobile.idUtilisateurMobile]);
+  return result;
+}
 
+// Suppression par utilisateurmobile
+deleteOneItem(String nom) async {
+  var result = await db.delete("utilisateurmobile", where: "nom = $nom");
+  return result;
+}
 
+// Suppression complet*
+Future<int> deleteItem() async {
+  return await db.delete("utilisateurmobile");
+}

@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:foi_et_verite_2/utils/colorsApp.dart';
-import 'package:foi_et_verite_2/utils/url.dart';
-import 'package:foi_et_verite_2/widgets/cardDialogue.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/colorsApp.dart';
+import '../utils/url.dart';
+import '../widgets/cardDialogue.dart';
 
 class NewProfilScreen extends StatefulWidget {
   @override
@@ -60,7 +61,7 @@ class _NewProfilScreenState extends State<NewProfilScreen> {
         Navigator.pop(context);
         errorDialogueCard("Erreur !!!", "${response[0]['message']}", context);
       }
-    } else if (data.statusCode > 200) {
+    } else if (data.statusCode < 200) {
       Navigator.pop(context);
       errorDialogueCard("Connexion", "Time out !", context);
     }
@@ -117,13 +118,26 @@ class _NewProfilScreenState extends State<NewProfilScreen> {
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),
                             ),
-                            onPressed: () => createAccount(
-                                _loginController.text,
-                                _passController.text,
-                                _nomController.text,
-                                _prenomController.text,
-                                _numTelController.text,
-                                _emailController.text)),
+                            onPressed: () {
+                              if (_loginController.text.isEmpty ||
+                                  _passController.text.isEmpty ||
+                                  _nomController.text.isEmpty ||
+                                  _prenomController.text.isEmpty ||
+                                  _numTelController.text.isEmpty ||
+                                  _emailController.text.isEmpty)
+                                errorDialogueCard(
+                                    "Erreur !!!",
+                                    "Renseigner tous les champs svp !!!",
+                                    context);
+                              else
+                                createAccount(
+                                    _loginController.text,
+                                    _passController.text,
+                                    _nomController.text,
+                                    _prenomController.text,
+                                    _numTelController.text,
+                                    _emailController.text);
+                            }),
                       ),
                       Text(' '),
                       Expanded(

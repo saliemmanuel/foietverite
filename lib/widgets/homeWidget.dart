@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:foi_et_verite_2/screen/derniereAnnonce.dart';
-import 'package:foi_et_verite_2/screen/enseignementScreen.dart';
-import 'package:foi_et_verite_2/screen/nousAiderScreen.dart';
-import 'package:foi_et_verite_2/screen/podcastScreen.dart';
-import 'package:foi_et_verite_2/screen/webRadioScreen.dart';
-import 'package:foi_et_verite_2/screen/youtubeVideoScreen.dart';
-import 'package:foi_et_verite_2/utils/route.dart';
-import 'package:foi_et_verite_2/widgets/cardFoiEtVeriteView.dart';
 import 'package:line_icons/line_icons.dart';
+
+import '../screen/derniereAnnonce.dart';
+import '../screen/enseignementScreen.dart';
+import '../screen/nousAiderScreen.dart';
+import '../screen/podcastScreen.dart';
+import '../screen/webRadioScreen.dart';
+import '../screen/youtubeVideoScreen.dart';
+import '../utils/route.dart';
+import 'cardFoiEtVeriteView.dart';
 
 class AcceuilScreen extends StatelessWidget {
   @override

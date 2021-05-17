@@ -12,5 +12,4 @@ class ColorsApp {
   static Color textColors = Color(0xFFFFFFFF);
   static Color unselectedItemColor = Color(0xFF757575);
   static Color iconAppBarColor = Colors.white;
-  
 }

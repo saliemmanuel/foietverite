@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foi_et_verite_2/utils/colorsApp.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../utils/colorsApp.dart';
 
 class Enseignements extends StatelessWidget {
   @override

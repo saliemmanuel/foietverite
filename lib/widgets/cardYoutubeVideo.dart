@@ -1,43 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:foi_et_verite_2/utils/colorsApp.dart';
+import 'package:share/share.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import '../utils/colorsApp.dart';
 
-class CardYoutubeVideo extends StatelessWidget {
+class CardYoutubeVideo extends StatefulWidget {
+  final String titreVideoYoutube;
+  final String lienVideoYoutube;
+  final String descriptionVideoYoutube;
+
+  const CardYoutubeVideo({
+    Key key,
+    this.titreVideoYoutube,
+    this.lienVideoYoutube,
+    this.descriptionVideoYoutube,
+  }) : super(key: key);
+
+  @override
+  _CardYoutubeVideoState createState() => _CardYoutubeVideoState();
+}
+
+class _CardYoutubeVideoState extends State<CardYoutubeVideo> {
+  YoutubePlayerController _controller;
+  getData() {
+    _controller = YoutubePlayerController(
+      initialVideoId: YoutubePlayer.convertUrlToId(widget.lienVideoYoutube),
+      flags: YoutubePlayerFlags(
+        autoPlay: false,
+        mute: true,
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            height: 255.0,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(8.0)),
-            child: Stack(
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: YoutubePlayerBuilder(
+          player: YoutubePlayer(
+            controller: _controller,
+            showVideoProgressIndicator: true,
+            progressIndicatorColor: Colors.red,
+            progressColors: ProgressBarColors(
+                playedColor: Colors.red, handleColor: Colors.red),
+          ),
+          builder: (context, player) {
+            return Stack(
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    player,
                     Container(
-                      height: 163.5,
-                      child: Center(
-                        child: CircleAvatar(
-                          radius: 35.0,
-                          backgroundColor: Colors.red,
-                          child: Icon(Icons.play_arrow_rounded, size: 53.0),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 90.5,
-                      color: ColorsApp.primaryColors,
+                      color: ColorsApp.unselectedItemColor,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0, top: 10.0),
                         child: ListTile(
-                          title: Text("Titre vidéo",
+                          title: Text(widget.titreVideoYoutube,
                               style: TextStyle(color: ColorsApp.textColors)),
-                          subtitle: Text("description detaillé vidéo",
+                          subtitle: Text(
+                              "\n${widget.descriptionVideoYoutube}\n",
                               style: TextStyle(color: Colors.grey)),
                         ),
                       ),
@@ -45,19 +78,14 @@ class CardYoutubeVideo extends StatelessWidget {
                   ],
                 ),
                 Positioned(
-                    left: 20.0,
-                    top: 140.0,
-                    child: Slider(
-                        max: 990.0, min: 0.0, value: 100, onChanged: (val) {})),
-                Positioned(
                   right: 5.0,
                   top: 10.0,
                   child: PopupMenuButton(
-                    icon: Icon(Icons.more_vert, color: ColorsApp.primaryColors),
+                    icon: Icon(Icons.more_vert, color: ColorsApp.textColors),
                     itemBuilder: (BuildContext context) =>
                         <PopupMenuEntry<String>>[
                       PopupMenuItem(
-                        value: "Partager",
+                        value: "partager",
                         textStyle: TextStyle(color: Colors.black),
                         child: Text("Partager"),
                         enabled: true,
@@ -69,15 +97,17 @@ class CardYoutubeVideo extends StatelessWidget {
                         enabled: true,
                       ),
                     ],
-                    onSelected: (value) {},
+                    onSelected: (value) {
+                      if (value == 'partager')
+                        Share.share(widget.lienVideoYoutube);
+                      if (value == 'signaler') print("signaler");
+                    },
                     tooltip: "Plus de detail",
                   ),
                 )
               ],
-            ),
-          ),
-        )
-      ],
+            );
+          }),
     );
   }
 }
