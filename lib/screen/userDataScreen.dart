@@ -22,7 +22,7 @@ class UserData extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-      child: Column(children: [
+      child: ListView(children: [
         Card(
           child: ListTile(
             title: Text("VOS INFORMATIONS",
@@ -66,7 +66,7 @@ class UserData extends StatelessWidget {
             title: Text("Déconnexion",
                 style: TextStyle(color: ColorsApp.primaryColors)),
             onTap: () {
-              deleteOneItem('$nom');
+              deleteItem();
               pushNewPageRemoveUntil(LoginScreen(), context);
             },
           ),

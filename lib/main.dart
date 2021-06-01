@@ -10,6 +10,7 @@ void main() async {
     title: "Foi et vérité",
     home: SplashScreen(),
     theme: ThemeData(
+        primaryColor: ColorsApp.primaryColors,
         appBarTheme: AppBarTheme(
             iconTheme: IconThemeData(color: ColorsApp.iconAppBarColor)),
         iconTheme: IconThemeData(

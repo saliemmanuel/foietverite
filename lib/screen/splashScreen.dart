@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:foi_et_verite/utils/notificationManager.dart';
 import 'loginScreen.dart';
 import '../db/db.dart';
 import '../utils/colorsApp.dart';
@@ -13,28 +14,31 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   List userIsConnected;
+  NotificationManager notificationManager = NotificationManager();
   @override
   void initState() {
     super.initState();
     readUserData();
     Timer(Duration(seconds: 3), () async {
-      pushNewPageRemoveUntil(
-          userIsConnected == null
-              ? LoginScreen()
-              : HomeScreen(
-                  nom: userIsConnected[0]["nom"],
-                  prenom: userIsConnected[0]["prenom"],
-                  telephone: userIsConnected[0]["numTel"],
-                  email: userIsConnected[0]["email"],
-                ),
-          context);
+      if (userIsConnected.isNotEmpty) {
+        pushNewPageRemoveUntil(
+            HomeScreen(
+              nom: userIsConnected[0]["nom"],
+              prenom: userIsConnected[0]["prenom"],
+              telephone: userIsConnected[0]["numTel"],
+              email: userIsConnected[0]["email"],
+            ),
+            context);
+        notificationManager.initnotification();
+      } else {
+        pushNewPageRemoveUntil(LoginScreen(), context);
+      }
     });
   }
 
   readUserData() async {
-    userIsConnected = await getItems();
-    print(userIsConnected);
     setState(() {});
+    userIsConnected = await getItems();
   }
 
   @override

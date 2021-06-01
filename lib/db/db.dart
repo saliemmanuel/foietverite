@@ -17,6 +17,7 @@ Future<void> initDatabase() async {
                 `idUtilisateur` varchar(11) UNIQUE NOT NULL )""";
     await db.execute(utilisateurmobile);
   });
+  getItems();
 }
 
 Future<String> getDatabasePath(String dbName) async {
@@ -53,8 +54,8 @@ update(Utilisateurmobile newUtilisateurmobile) async {
 }
 
 // Suppression par utilisateurmobile
-deleteOneItem(String nom) async {
-  var result = await db.delete("utilisateurmobile", where: "nom = $nom");
+deleteOneItem(String numTel) async {
+  var result = await db.delete("utilisateurmobile", where: "nom = $numTel");
   return result;
 }
 

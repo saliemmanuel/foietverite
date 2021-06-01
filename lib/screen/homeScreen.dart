@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:foi_et_verite/utils/notificationManager.dart';
+import 'package:foi_et_verite/utils/route.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:toast/toast.dart';
-
 import '../utils/colorsApp.dart';
 import '../widgets/homeWidget.dart';
 import 'aproposScreen.dart';
+import 'notificationScreen.dart';
 import 'searchScreen.dart';
 import 'userDataScreen.dart';
 
@@ -23,6 +24,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var _currentIndex = 0;
+  NotificationManager notificationManager = NotificationManager();
+
+  @override
+  void initState() {
+    notificationManager.initNotificationSetting(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,39 +45,25 @@ class _HomeScreenState extends State<HomeScreen> {
         email: widget.email,
       ),
     ];
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor:
-            _currentIndex == 1 ? ColorsApp.textColors : ColorsApp.primaryColors,
-        elevation: 0,
-        title: _currentIndex == 1
-            ? TextField(
-                enableSuggestions: true,
-                cursorColor: Colors.black,
-                autocorrect: true,
-                decoration: InputDecoration(
-                    hintText: "Mots clé ici",
-                    disabledBorder: InputBorder.none,
-                    border: InputBorder.none,
-                    suffixIcon:
-                        IconButton(icon: Icon(Icons.search), onPressed: () {})))
-            : Text("Foi et vérité",
-                style: TextStyle(
-                    color: ColorsApp.textColors, fontWeight: FontWeight.bold)),
-        actions: [
-          _currentIndex == 1
-              ? SizedBox()
-              : Stack(
-                  children: [
-                    IconButton(
-                        icon: Icon(Icons.notifications,
-                            color: ColorsApp.textColors),
-                        onPressed: () =>
-                            Toast.show("---------------", context)),
-                  ],
-                ),
-        ],
-      ),
+      appBar: _currentIndex == 1
+          ? null
+          : AppBar(
+              backgroundColor: ColorsApp.primaryColors,
+              elevation: 0,
+              title: Text("Foi et vérité",
+                  style: TextStyle(
+                      color: ColorsApp.textColors,
+                      fontWeight: FontWeight.bold)),
+              actions: [
+                IconButton(
+                    icon:
+                        Icon(Icons.notifications, color: ColorsApp.textColors),
+                    onPressed: () =>
+                        pushNewPage(NotificationScreen(), context)),
+              ],
+            ),
       body: Container(
         decoration: BoxDecoration(
           color: ColorsApp.bodyBackgroundColor,
@@ -110,6 +104,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.notifications),
+        onPressed: () => notificationManager.showNotification(),
       ),
     );
   }

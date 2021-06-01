@@ -1,6 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:foi_et_verite/widgets/cardDialogue.dart';
+import 'package:http/http.dart' as http;
 import '../utils/colorsApp.dart';
+import '../utils/url.dart';
 import '../widgets/cardPodcast.dart';
 
 class PodcastScreen extends StatefulWidget {
@@ -9,6 +13,27 @@ class PodcastScreen extends StatefulWidget {
 }
 
 class _PodcastScreenState extends State<PodcastScreen> {
+  List podcastList;
+  // ()
+  getPodcast() async {
+    var indexLogin = "5";
+    var data = await http.post(UrlApi.urlApi(), body: {
+      "index": indexLogin,
+    });
+    if (data.statusCode == 200) {
+      var response = jsonDecode(data.body);
+      setState(() => podcastList = response);
+    } else
+      errorDialogueCard(
+          "Erreur !!!", "Erreur lors du chargement des Annonces", context);
+  }
+
+  @override
+  void initState() {
+    getPodcast();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,19 +45,23 @@ class _PodcastScreenState extends State<PodcastScreen> {
       ),
       backgroundColor: ColorsApp.bodyBackgroundColor,
       body: Container(
-        decoration: BoxDecoration(
-          color: ColorsApp.bodyBackgroundColor,
-          image: DecorationImage(
-            image: AssetImage("assets/bg.jpg"),
-            fit: BoxFit.cover,
+          decoration: BoxDecoration(
+            color: ColorsApp.bodyBackgroundColor,
+            image: DecorationImage(
+              image: AssetImage("assets/bg.jpg"),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: ListView.builder(
-            itemCount: 18,
-            itemBuilder: (_, i) {
-              return CardPodcast();
-            }),
-      ),
+          child: podcastList == null
+              ? Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                  itemCount: podcastList == null ? 0 : podcastList.length,
+                  itemBuilder: (_, i) {
+                    return CardPodcast(
+                      linkPodcast: podcastList[i]['linkPodcast'],
+                      titrePodcast: podcastList[i]['titrePodcast'],
+                    );
+                  })),
     );
   }
 }

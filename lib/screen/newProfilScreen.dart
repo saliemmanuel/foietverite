@@ -35,7 +35,7 @@ class _NewProfilScreenState extends State<NewProfilScreen> {
 
   createAccount(String login, String pass, String nom, String prenom,
       String numTel, String email) async {
-    simpleDialogueCard("Créer compte", "Creation en cour ...", context);
+    simpleDialogueCardSansTitle("Création en cour ...", context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var index = "2";
     var data = await http.post(UrlApi.urlApi(), body: {
@@ -69,91 +69,94 @@ class _NewProfilScreenState extends State<NewProfilScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorsApp.primaryColors,
-        title: Text("Créer un compte"),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          color: ColorsApp.bodyBackgroundColor,
-          image: DecorationImage(
-            image: AssetImage("assets/bg.jpg"),
-            fit: BoxFit.cover,
-          ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: ColorsApp.primaryColors,
+          title: Text("Créer un compte"),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: ListView(
-            children: [
-              SizedBox(height: 20.0),
-              custumTextField(
-                  _loginController, false, Icon(Icons.person), "login"),
-              SizedBox(height: 8.0),
-              custumTextField(_passController, true,
-                  Icon(Icons.vpn_key_rounded), "mot de passe"),
-              SizedBox(height: 8.0),
-              custumTextField(_nomController, false, Icon(Icons.person), "nom"),
-              SizedBox(height: 8.0),
-              custumTextField(
-                  _prenomController, false, Icon(Icons.person), "prenom"),
-              SizedBox(height: 8.0),
-              custumTextField(
-                  _numTelController, false, Icon(Icons.phone), "téléphone"),
-              SizedBox(height: 8.0),
-              custumTextField(
-                  _emailController, false, Icon(Icons.email_rounded), "email"),
-              SizedBox(height: 20.0),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        child: MaterialButton(
-                            color: Colors.teal,
-                            child: Text(
-                              "Créer un compte",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: () {
-                              if (_loginController.text.isEmpty ||
-                                  _passController.text.isEmpty ||
-                                  _nomController.text.isEmpty ||
-                                  _prenomController.text.isEmpty ||
-                                  _numTelController.text.isEmpty ||
-                                  _emailController.text.isEmpty)
-                                errorDialogueCard(
-                                    "Erreur !!!",
-                                    "Renseigner tous les champs svp !!!",
-                                    context);
-                              else
-                                createAccount(
-                                    _loginController.text,
-                                    _passController.text,
-                                    _nomController.text,
-                                    _prenomController.text,
-                                    _numTelController.text,
-                                    _emailController.text);
-                            }),
-                      ),
-                      Text(' '),
-                      Expanded(
-                        child: MaterialButton(
-                            color: Colors.red,
-                            child: Text(
-                              "Annuler",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: () => Navigator.pop(context)),
-                      )
-                    ]),
-              )
-            ],
+        body: Container(
+          decoration: BoxDecoration(
+            color: ColorsApp.bodyBackgroundColor,
+            image: DecorationImage(
+              image: AssetImage("assets/bg.jpg"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: ListView(
+              children: [
+                SizedBox(height: 20.0),
+                custumTextField(
+                    _loginController, false, Icon(Icons.person), "login"),
+                SizedBox(height: 8.0),
+                custumTextField(_passController, true,
+                    Icon(Icons.vpn_key_rounded), "mot de passe"),
+                SizedBox(height: 8.0),
+                custumTextField(
+                    _nomController, false, Icon(Icons.person), "nom"),
+                SizedBox(height: 8.0),
+                custumTextField(
+                    _prenomController, false, Icon(Icons.person), "prenom"),
+                SizedBox(height: 8.0),
+                custumTextField(
+                    _numTelController, false, Icon(Icons.phone), "téléphone"),
+                SizedBox(height: 8.0),
+                custumTextField(_emailController, false,
+                    Icon(Icons.email_rounded), "email"),
+                SizedBox(height: 20.0),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: MaterialButton(
+                              color: Colors.teal,
+                              child: Text(
+                                "Créer un compte",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                if (_loginController.text.isEmpty ||
+                                    _passController.text.isEmpty ||
+                                    _nomController.text.isEmpty ||
+                                    _prenomController.text.isEmpty ||
+                                    _numTelController.text.isEmpty ||
+                                    _emailController.text.isEmpty)
+                                  errorDialogueCard(
+                                      "Erreur !!!",
+                                      "Renseigner tous les champs svp !!!",
+                                      context);
+                                else
+                                  createAccount(
+                                      _loginController.text,
+                                      _passController.text,
+                                      _nomController.text,
+                                      _prenomController.text,
+                                      _numTelController.text,
+                                      _emailController.text);
+                              }),
+                        ),
+                        Text(' '),
+                        Expanded(
+                          child: MaterialButton(
+                              color: Colors.red,
+                              child: Text(
+                                "Annuler",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () => Navigator.pop(context)),
+                        )
+                      ]),
+                )
+              ],
+            ),
           ),
         ),
       ),

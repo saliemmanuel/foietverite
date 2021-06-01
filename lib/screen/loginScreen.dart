@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   getLogin(String login, String pass) async {
-    simpleDialogueCard("Connexion", "Connexion en cour ...", context);
+    simpleDialogueCardSansTitle("Connexion en cour ...", context);
     var indexLogin = "1";
     var data = await http.post(UrlApi.urlApi(), body: {
       "index": indexLogin,

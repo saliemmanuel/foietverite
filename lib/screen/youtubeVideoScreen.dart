@@ -14,7 +14,7 @@ class YoutubeViewScreen extends StatefulWidget {
 
 class _YoutubeViewScreenState extends State<YoutubeViewScreen> {
   List youtubeVideoList;
-// ()
+  // ()
   getYoutubeView() async {
     var indexLogin = "4";
     var data = await http.post(UrlApi.urlApi(), body: {
@@ -42,28 +42,32 @@ class _YoutubeViewScreenState extends State<YoutubeViewScreen> {
           backgroundColor: ColorsApp.primaryColors,
           title: Text("Youtube"),
         ),
-        body: Container(
-            decoration: BoxDecoration(
-              color: ColorsApp.bodyBackgroundColor,
-              image: DecorationImage(
-                image: AssetImage("assets/bg.jpg"),
-                fit: BoxFit.cover,
+        body: RefreshIndicator(
+          child: Container(
+              decoration: BoxDecoration(
+                color: ColorsApp.bodyBackgroundColor,
+                image: DecorationImage(
+                  image: AssetImage("assets/bg.jpg"),
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            child: youtubeVideoList == null
-                ? Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount:
-                        youtubeVideoList == null ? 0 : youtubeVideoList.length,
-                    itemBuilder: (_, i) {
-                      return CardYoutubeVideo(
-                        titreVideoYoutube: youtubeVideoList[i]
-                            ['titreVideoYoutube'],
-                        lienVideoYoutube: youtubeVideoList[i]
-                            ['linkVideoYoutube'],
-                        descriptionVideoYoutube: youtubeVideoList[i]
-                            ['descriptionVideoYoutube'],
-                      );
-                    })));
+              child: youtubeVideoList == null
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      itemCount: youtubeVideoList == null
+                          ? 0
+                          : youtubeVideoList.length,
+                      itemBuilder: (_, i) {
+                        return CardYoutubeVideo(
+                          titreVideoYoutube: youtubeVideoList[i]
+                              ['titreVideoYoutube'],
+                          lienVideoYoutube: youtubeVideoList[i]
+                              ['linkVideoYoutube'],
+                          descriptionVideoYoutube: youtubeVideoList[i]
+                              ['descriptionVideoYoutube'],
+                        );
+                      })),
+          onRefresh: () async {},
+        ));
   }
 }

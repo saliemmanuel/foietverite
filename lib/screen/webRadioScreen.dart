@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../utils/colorsApp.dart';
-import '../widgets/cardWebRadio.dart';
 
 class WebRadioScreen extends StatefulWidget {
   @override
@@ -24,11 +23,11 @@ class _WebRadioScreenState extends State<WebRadioScreen> {
               fit: BoxFit.cover,
             ),
           ),
-          child: ListView.builder(
-              itemCount: 18,
-              itemBuilder: (_, i) {
-                return CardWebRadio();
-              })),
+          child: Center(
+            child: Card(
+                child: Text(
+                    "\n  Disponible à la prochaine version de Foi et Vérité (v2) \n")),
+          )),
     );
   }
 }
