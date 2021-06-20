@@ -6,6 +6,9 @@ import '../db/db.dart';
 import '../utils/colorsApp.dart';
 import '../utils/route.dart';
 import 'homeScreen.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '../utils/url.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -14,11 +17,36 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   List userIsConnected;
+  List notificationList;
   NotificationManager notificationManager = NotificationManager();
   @override
   void initState() {
-    super.initState();
     readUserData();
+    getNotification();
+    timerSplash();
+    super.initState();
+  }
+
+  readUserData() async {
+    setState(() {});
+    userIsConnected = await getItems();
+  }
+
+  getNotification() async {
+    var index = "7";
+    var data = await http.post(UrlApi.urlApi(), body: {
+      "index": index,
+    });
+    if (data.statusCode == 200) {
+      var response = jsonDecode(data.body);
+      setState(() => notificationList = response);
+      for (var i = 0; i < notificationList.length; i++) {
+        notificationManager.showNotification(i, notificationList[i]["body"]);
+      }
+    }
+  }
+
+  timerSplash() {
     Timer(Duration(seconds: 3), () async {
       if (userIsConnected.isNotEmpty) {
         pushNewPageRemoveUntil(
@@ -34,11 +62,6 @@ class _SplashScreenState extends State<SplashScreen> {
         pushNewPageRemoveUntil(LoginScreen(), context);
       }
     });
-  }
-
-  readUserData() async {
-    setState(() {});
-    userIsConnected = await getItems();
   }
 
   @override

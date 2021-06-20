@@ -14,7 +14,6 @@ class PodcastScreen extends StatefulWidget {
 
 class _PodcastScreenState extends State<PodcastScreen> {
   List podcastList;
-  // ()
   getPodcast() async {
     var indexLogin = "5";
     var data = await http.post(UrlApi.urlApi(), body: {

@@ -28,9 +28,9 @@ class NotificationManager {
     });
   }
 
-  showNotification() async {
+  showNotification(int id, String body) async {
     initnotification();
-    await notif.show(0, 'Foi et vérité', "Nouveau", platformChannelSpecifics,
+    await notif.show(id, 'Foi et vérité', body, platformChannelSpecifics,
         payload: 'foietverite');
   }
 }
